@@ -15,6 +15,16 @@ var singers = [
     "Maroon 5",
     "Reneé Rapp",
     "Dove Cameron",
+    "Drex Carter",
+    "Avicii",
+    "Neffex",
+    "Yuston XIII",
+    "Orelsan",
+    "T3NZU",
+    "Imagine Dragons",
+    "OneRepublic",
+    "David Guetta",
+    "TheFatRat"
 ]
 
 var actors = [
