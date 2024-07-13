@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 
 <html>
-
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <title>Kiss Mary Kill</title>
-
-        <script src="/name.js"></script>
 
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
@@ -20,77 +17,75 @@
                 background-color: #eda338;
                 overflow: hidden;
             }
-        
+
             li {
                 background: linear-gradient(to right, rgb(255 255 255) 0%, rgb(241 245 249) 50%, rgb(203 213 225) 100%);
             }
-        
+
             h1 {
                 font-family: 'Inter', sans-serif;
                 font-weight: 800;
                 color: #f0ce7e;
             }
-        
+
             #start-icon,
             #start_btn,
             #add-icon,
             #add_player_btn {
                 transition: transform 0.5s ease;
             }
-        
+
             #start_btn,
             #add_player_btn {
                 background: linear-gradient(to right, rgb(75 85 99) 0%, rgb(30 41 59) 100%);
             }
-        
+
             #players-list {
                 overflow-y: auto;
             }
-        
+
             ::-webkit-scrollbar {
                 width: 10px;
             }
-        
+
             ::-webkit-scrollbar-thumb {
                 background: none;
                 border-radius: 5px;
                 transition: ease 0.5s;
             }
-        
+
             ::-webkit-scrollbar-track {
                 background: none;
             }
-        
+
             @media screen and (min-width: 600px) {
                 #add_player_btn:hover #add-icon {
                     transform: translate(-5rem, 0);
                 }
-        
+                
                 #start_btn:hover #start-icon {
                     transform: translate(-5rem, 0);
                 }
-        
-                #start_btn:hover,
-                #add_player_btn:hover {
+                
+                #start_btn:hover, #add_player_btn:hover {
                     transform: scale(1.01);
                 }
             }
         </style>
     </head>
-
     <body class="dark:text-gray-100 text-gray-800">
         <div id="app" class="h-screen w-screen">
             <h1 class="text-4xl font-bold text-center">Kiss Mary Kill</h1>
 
-            <ul class="text-2xl flex flex-col gap-2 items-center fixed top-14 left-0 right-0 h-5/6" id="categorys-list"></ul>
+            <ul class="text-2xl flex flex-col gap-2 items-center fixed top-14 left-0 right-0 h-5/6" id="players-list"></ul>
 
             <button class="fixed bottom-16 right-4 left-4 flex items-center gap-2 p-2 rounded justify-between" id="add_player_btn">
-                <p>Create category</p>
-                <i data-lucide="circle-plus" id="add-icon"></i>
+                <p>Add a player</p>
+                <i data-lucide="user-plus" id="add-icon"></i>
             </button>
 
             <button class="fixed bottom-4 right-4 left-4 flex items-center gap-2 p-2 rounded justify-between" id="start_btn">
-                <p>Next step</p>
+                <p>Start game</p>
                 <i data-lucide="play-circle" id="start-icon"></i>
             </button>
         </div>
@@ -98,30 +93,25 @@
         <script>
             $(document).ready(function() {
                 lucide.createIcons();
+            });
 
-                if (!localStorage.getItem('categories')) {
-                    localStorage.setItem('categories', JSON.stringify(['Actors', 'Singers']));
+            $('#add_player_btn').click(function() {
+                // ask for the name
+                let name = prompt('Enter player name');
+
+                if (!name) {
+                    alert('Please enter a name');
+                    return;
                 }
 
-                let categories = JSON.parse(localStorage.getItem('categories'));
-                for (let i = 0; i < categories.length; i++) {
-                    $('#categorys-list').append(`
-                        <li class="flex items-center gap-24 w-11/12 rounded-lg bg-white px-4 text-slate-600 py-1 shadow-lg" onclick="sessionStorage.setItem('category', '${categories[i]}')">
-                            <i data-lucide="pencil"></i>
-                            ${categories[i]}
-                        </li>
-                    `);
+                $('#players-list').append(`
+                    <li class="flex items-center gap-24 w-11/12 rounded-lg bg-white px-4 text-slate-600 py-1 shadow-lg">
+                        <i data-lucide="user-minus" class="hover:cursor-pointer hover:text-red-600" onclick="$(this).parent().remove()"></i>
+                        ${name}
+                    </li>
+                `);
 
-                    lucide.createIcons();
-                }
-
-                $('#start_btn').click(function() {
-                    if (!sessionStorage.getItem('category')) {
-                        alert("Please select a category");
-                        return;
-                    }
-                    window.location.href = '/index.html';
-                });
+                lucide.createIcons();
             });
         </script>
     </body>
