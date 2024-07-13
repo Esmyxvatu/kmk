@@ -5,6 +5,8 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        <script src="/name.js"></script>
+
         <title>Kiss Mary Kill</title>
 
         <script src="https://cdn.tailwindcss.com"></script>
@@ -94,6 +96,24 @@
         <script>
             $(document).ready(function() {
                 lucide.createIcons();
+            });
+
+            $('#start_btn').click(function() {
+                if ($('#players-list li').length == 0) {
+                    alert('Please add at least one player');
+                    return;
+                }
+
+                let players = $('#players-list li').map(function() {
+                    let text = $(this).text();
+                    text = text.trim();
+                    text = text.replaceAll(/\n|\r/g, ' ');
+                    return text;
+                }).get();
+
+                sessionStorage.setItem('players', JSON.stringify(players));
+
+                location.href = 'game.html';
             });
 
             $('#add_player_btn').click(function() {

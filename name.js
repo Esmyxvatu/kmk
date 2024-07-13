@@ -24,7 +24,15 @@ var singers = [
     "Imagine Dragons",
     "OneRepublic",
     "David Guetta",
-    "TheFatRat"
+    "TheFatRat",
+    "Avril Lavigne",
+    "Celine Dion",
+    "Kurt Kobain",
+    "Rihanna",
+    "Emily Osment",
+    "Ethan Cutkosky",
+    "Ben Barnes",
+    "Conan Grey"
 ]
 
 var actors = [
@@ -35,4 +43,50 @@ var actors = [
     "Madelyn Cline",
     "Pierre Niney",
     "Adèle Exarchopoulos",
+    "Timothée Chalamet",
+    "Alexandra Demi",
+    "Dylan O'brien",
+    "Emma Watson",
+    "Will Smith",
+    "Jenna Ortega",
+    "Nina Dobrev",
+    "Candice Accola",
+    "Emily Osment",
+    "Tania Raymonde",
+    "Chrisopher Masteron",
+    "Ethan Cutkosky",
+    "Noel Fisher",
+    "Emmy Rossum",
+    "Emmy Kenney",
+    "Shanola Hampton",
+    "Eliza Taylor",
+    "Bob Marley",
+    "Marie Avgeropoulos",
+    "Lindsey Morgan",
+    "Thomas McDonell",
+    "Ricky Whittle",
+    "Devon Bostick",
+    "Ben Barnes",
+    "Andrew Garfield",
+    "Chris Wood",
+    "Claire Holt",
+    "Joseph Morgan",
+    "Seth MacFarlane",
+    "Daniel Gilies",
+    "Benjamin Wadsworth",
+    "Phoebe Tonkin",
+    "Lola Flanery",
+    "Nicole Wallace",
+    "Kylie Cantrall",
 ]
+
+var models = [
+    "Vinnie Hacker",
+    "Kendall Jenner",
+    "Hailey Bieber",
+]
+
+var alls = []
+alls = alls.concat(singers)
+alls = alls.concat(actors)
+alls = alls.concat(models)
