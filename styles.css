@@ -18,18 +18,6 @@ li {
 #start_btn,
 #add_player_btn {
     background: linear-gradient(to right, rgb(75 85 99) 0%, rgb(30 41 59) 100%);
-
-    &:hover #add-icon {
-        transform: translate(-5rem, 0);
-    }
-
-    &:hover #start-icon {
-        transform: translate(-5rem, 0);
-    }
-
-    &:hover {
-        transform: scale(1.01);
-    }
 }
 
 #players-list {
@@ -48,4 +36,18 @@ li {
 
 ::-webkit-scrollbar-track {
     background: none;
+}
+
+@media screen and (min-width: 600px) {
+    #add_player_btn:hover #add-icon {
+        transform: translate(-5rem, 0);
+    }
+    
+    #start_btn:hover #start-icon {
+        transform: translate(-5rem, 0);
+    }
+    
+    #start_btn:hover, #add_player_btn:hover {
+        transform: scale(1.01);
+    }
 }
