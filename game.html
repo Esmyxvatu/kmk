@@ -35,6 +35,31 @@
                 background: none;
             }
 
+            .wheel {
+                width: 300px;
+                height: 50px;
+                overflow: hidden;
+                border: 2px solid #000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+
+            .wheel-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: absolute;
+                top: 0;
+            }
+
+            .wheel-content > div {
+                height: 50px;
+                line-height: 50px;
+                text-align: center;
+            }
+
             @media screen and (min-width: 600px) {
                 #add_player_btn:hover #add-icon {
                     transform: translate(-5rem, 0);
@@ -53,24 +78,82 @@
     </head>
 
     <body class="dark:text-gray-100 text-gray-800 h-screen w-screen">
-        <div id="step1">
-            <p id="user"></p>
+        <div id="step1" class="flex flex-col items-center justify-center h-screen">
+            <div class="wheel">
+                <div class="wheel-content" id="wheelContent"></div>
+            </div>
         </div>
-        <div id="step2">
+        <div id="step2" class="hidden">
             <p id="question"></p>
         </div>
 
         <script>
+            let players = JSON.parse(sessionStorage.getItem('players'));
+            let offset = 0;
+            let speed = 5;  // Vitesse du défilement, en pixels par frame
+            let completedTurns = 0;
+            const targetName = players[Math.floor(Math.random() * players.length)];  // Nom cible
+            let isStopping = false;
+
             $(document).ready(function() {
                 lucide.createIcons();
 
                 Play();
             });
 
+            function animate() {
+                offset += speed;
+
+                // Vérifiez si un tour complet a été effectué
+                if (offset >= 50) {
+                    const firstChild = wheelContent.firstElementChild;
+                    wheelContent.appendChild(firstChild);
+                    offset = 0;
+                    completedTurns++;
+
+                    if (speed > 1) {
+                        speed -= 0.5;
+                    }
+                }
+
+                // Si deux tours complets sont effectués, activez le mode d'arrêt
+                if (completedTurns >= 10) {
+                    isStopping = true;
+                }
+
+                wheelContent.style.transform = `translateY(-${offset}px)`;
+
+                // Arrêter l'animation sur le nom spécifique après deux tours
+                if (isStopping) {
+                    const firstChildName = wheelContent.firstElementChild.textContent;
+                    if (firstChildName === targetName && offset === 0) {
+                        // ajouter encore un tour
+
+                        return;  // Arrêter l'animation
+                    }
+                }
+
+                requestAnimationFrame(animate);
+            }
+
             function Play() {
-                let players = JSON.parse(sessionStorage.getItem('players'));
-                let random_user = Math.floor(Math.random() * players.length);
-                document.getElementById('user').innerHTML = players[random_user];
+                const wheelContent = document.getElementById('wheelContent');
+
+                // Initialiser les chanteurs
+                players.forEach(singer => {
+                    const div = document.createElement('div');
+                    div.textContent = singer;
+                    wheelContent.appendChild(div);
+                });
+
+                // Dupliquer les chanteurs pour un défilement infini
+                players.forEach(singer => {
+                    const div = document.createElement('div');
+                    div.textContent = singer;
+                    wheelContent.appendChild(div);
+                });
+
+                animate();
 
                 let category_ = sessionStorage.getItem('category').replace(' ', '_').toLowerCase();
                 let peoples = lists[category_];
