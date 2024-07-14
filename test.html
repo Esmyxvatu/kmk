@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Défilement de texte</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .wheel {
+            width: 300px;
+            height: 50px;
+            overflow: hidden;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .wheel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            top: 0;
+        }
+
+        .wheel-content > div {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wheel">
+        <div class="wheel-content" id="wheelContent"></div>
+    </div>
+
+    <script>
+    const singers = ["Maria", "Maëlys", "Maëlia", "Béatris", "Maya", "Lola", "Alyssa"];
+    const wheelContent = document.getElementById('wheelContent');
+
+    // Initialiser les chanteurs
+    singers.forEach(singer => {
+        const div = document.createElement('div');
+        div.textContent = singer;
+        wheelContent.appendChild(div);
+    });
+
+    // Dupliquer les chanteurs pour un défilement infini
+    singers.forEach(singer => {
+        const div = document.createElement('div');
+        div.textContent = singer;
+        wheelContent.appendChild(div);
+    });
+
+    let offset = 0;
+    const speed = 1;  // Vitesse du défilement, en pixels par frame
+    let completedTurns = 0;
+    const targetName = singers[Math.floor(Math.random() * singers.length)];  // Nom cible
+    let isStopping = false;
+
+    function animate() {
+        offset += speed;
+
+        // Vérifiez si un tour complet a été effectué
+        if (offset >= 50) {
+            const firstChild = wheelContent.firstElementChild;
+            wheelContent.appendChild(firstChild);
+            offset = 0;
+            completedTurns++;
+        }
+
+        // Si deux tours complets sont effectués, activez le mode d'arrêt
+        if (completedTurns >= 10) {
+            isStopping = true;
+        }
+
+        wheelContent.style.transform = `translateY(-${offset}px)`;
+
+        // Arrêter l'animation sur le nom spécifique après deux tours
+        if (isStopping) {
+            const firstChildName = wheelContent.firstElementChild.textContent;
+            if (firstChildName === targetName && offset === 0) {
+                // ajouter encore un tour
+
+                return;  // Arrêter l'animation
+            }
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    // Démarrer l'animation
+    animate();    </script>
+</body>
+
+</html>
