@@ -95,6 +95,15 @@
 
         <script>
             $(document).ready(function() {
+                for (let player of JSON.parse(sessionStorage.getItem('players'))) {
+                    $('#players-list').append(`
+                        <li class="flex items-center gap-24 w-11/12 rounded-lg bg-white px-4 text-slate-600 py-1 shadow-lg">
+                            <i data-lucide="user-minus" class="hover:cursor-pointer hover:text-red-600" onclick="$(this).parent().remove()"></i>
+                            ${player}
+                        </li>
+                    `);
+                }
+
                 lucide.createIcons();
             });
 
