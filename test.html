@@ -67,7 +67,7 @@
     });
 
     let offset = 0;
-    const speed = 1;  // Vitesse du défilement, en pixels par frame
+    let speed = 3;  // Vitesse du défilement, en pixels par frame
     let completedTurns = 0;
     const targetName = singers[Math.floor(Math.random() * singers.length)];  // Nom cible
     let isStopping = false;
@@ -81,6 +81,10 @@
             wheelContent.appendChild(firstChild);
             offset = 0;
             completedTurns++;
+
+            if (speed > 1) {
+                speed -= 0.25;
+            }
         }
 
         // Si deux tours complets sont effectués, activez le mode d'arrêt
