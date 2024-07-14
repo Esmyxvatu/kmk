@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Défilement de texte</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+
     <style>
         body {
             display: flex;
@@ -40,6 +42,8 @@
             line-height: 50px;
             text-align: center;
         }
+
+        
     </style>
 </head>
 
@@ -47,6 +51,7 @@
     <div class="wheel">
         <div class="wheel-content" id="wheelContent"></div>
     </div>
+    <canvas id="confettiContainer"></canvas>
 
     <script>
     const singers = ["Maria", "Maëlys", "Maëlia", "Béatris", "Maya", "Lola", "Alyssa"];
@@ -98,7 +103,12 @@
         if (isStopping) {
             const firstChildName = wheelContent.firstElementChild.textContent;
             if (firstChildName === targetName && offset === 0) {
-                // ajouter encore un tour
+                // lancer les confettis
+                const confettiContainer = document.getElementById('confettiContainer');
+                const confetti = new ConfettiGenerator({
+                    target: confettiContainer
+                });
+                confetti.render();
 
                 return;  // Arrêter l'animation
             }

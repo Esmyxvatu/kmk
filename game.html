@@ -13,6 +13,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
 
         <style>
             body {
@@ -63,6 +64,14 @@
                 align-items: center;
             }
 
+            #confettiContainer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
             @media screen and (min-width: 600px) {
                 #add_player_btn:hover #add-icon {
                     transform: translate(-5rem, 0);
@@ -85,6 +94,7 @@
             <div class="wheel">
                 <div class="wheel-content" id="wheelContent"></div>
             </div>
+            <canvas id="confettiContainer"></canvas>
         </div>
         <div id="step2" class="hidden">
             <p id="question"></p>
@@ -130,6 +140,14 @@
                 if (isStopping) {
                     const firstChildName = wheelContent.firstElementChild.textContent;
                     if (firstChildName === targetName && offset === 0) {
+                        const confettiContainer = document.getElementById('confettiContainer');
+                        const confetti = new ConfettiGenerator({
+                            target: confettiContainer
+                        });
+                        confetti.render();
+                        setTimeout(() => {
+                            confetti.clear();
+                        }, 5000);
                         return;  // Arrêter l'animation
                     }
                 }
