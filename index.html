@@ -99,10 +99,6 @@
             $(document).ready(function() {
                 lucide.createIcons();
 
-                if (!localStorage.getItem('categories')) {
-                    localStorage.setItem('categories', JSON.stringify(['Actors', 'Singers', 'All', 'Fashion models']));
-                }
-
                 for (let i = 0; i < categories.length; i++) {
                     $('#categorys-list').append(`
                         <li class="flex items-center gap-24 w-11/12 rounded-lg bg-white px-4 text-slate-600 py-1 shadow-lg hover:cursor-pointer" onclick="if (sessionStorage.getItem('category') != '${categories[i]}') {sessionStorage.setItem('category', '${categories[i]}')} else {sessionStorage.removeItem('category')}">

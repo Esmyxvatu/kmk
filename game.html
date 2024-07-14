@@ -22,6 +22,12 @@
                 overflow: hidden;
             }
 
+            h1 {
+                font-family: 'Inter', sans-serif;
+                font-weight: 800;
+                color: #f0ce7e;
+            }
+
             ::-webkit-scrollbar {
                 width: 10px;
             }
@@ -72,6 +78,10 @@
                 height: 100%;
             }
 
+            #replay-btn {
+                background: linear-gradient(to right, rgb(75 85 99) 0%, rgb(30 41 59) 100%);
+            }
+
             @media screen and (min-width: 600px) {
                 #add_player_btn:hover #add-icon {
                     transform: translate(-5rem, 0);
@@ -91,22 +101,53 @@
 
     <body class="dark:text-gray-100 text-gray-800 h-screen w-screen">
         <div id="step1" class="flex flex-col items-center justify-center h-screen">
+            <h1 class="text-4xl fixed top-0 font-bold text-center">Kiss Mary Kill</h1>
             <div class="wheel">
                 <div class="wheel-content" id="wheelContent"></div>
             </div>
             <canvas id="confettiContainer"></canvas>
         </div>
-        <div id="step2" class="hidden">
-            <p id="question"></p>
+        <div id="step2" class="hidden flex flex-col items-center justify-center h-screen">
+            <h1 class="text-4xl fixed top-0 font-bold text-center">Kiss Mary Kill</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" class="fixed top-0 right-0"
+                onclick="quit()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" x2="9" y1="12" y2="12" />
+            </svg>
+
+            <p id="question" class="text-3xl mx-4"></p>
+
+            <button class="fixed bottom-4 right-4 left-4 flex items-center gap-2 p-2 rounded justify-between" onclick="Play()" id="replay-btn">
+                <p>Replay</p>
+                <i data-lucide="play-circle" id="start-icon"></i>
+            </button>
         </div>
 
         <script>
-            let players = JSON.parse(sessionStorage.getItem('players'));
+            let players = JSON.parse(localStorage.getItem('players'));
             let offset = 0;
             let speed = 10;  // Vitesse du défilement, en pixels par frame
             let completedTurns = 0;
-            const targetName = players[Math.floor(Math.random() * players.length)];  // Nom cible
+            let targetName = players[Math.floor(Math.random() * players.length)];  // Nom cible
             let isStopping = false;
+
+            const wheelContent = document.getElementById('wheelContent');
+
+            // Initialiser les chanteurs
+            players.forEach(singer => {
+                const div = document.createElement('div');
+                div.textContent = singer;
+                wheelContent.appendChild(div);
+            });
+
+            // Dupliquer les chanteurs pour un défilement infini
+            players.forEach(singer => {
+                const div = document.createElement('div');
+                div.textContent = singer;
+                wheelContent.appendChild(div);
+            });
 
             $(document).ready(function() {
                 lucide.createIcons();
@@ -147,7 +188,28 @@
                         confetti.render();
                         setTimeout(() => {
                             confetti.clear();
+
+                            let category_ = sessionStorage.getItem('category').replace(' ', '_').toLowerCase();
+                            let peoples = lists[category_];
+                            let names = []
+
+                            for (let i = 0; i < 3; i++) {
+                                let random_question = Math.floor(Math.random() * peoples.length);
+                                names.push(peoples[random_question]);
+                                peoples.splice(random_question, 1);
+                            }
+
+                            $('#step2').removeClass('hidden');
+                            $('#step1').addClass('hidden');
+                            $('#step2').addClass('block');
+                            let text = `
+                            ${targetName}, who do you marry, kill and kiss between
+                            <strong onclick="location.href = 'https://duckduckgo.com/?q=${names[0].replace(" ", "+")}&iax=images&ia=images&kp=1'">${names[0]}</strong>,
+                            <strong onclick="location.href = 'https://duckduckgo.com/?q=${names[1].replace(" ", "+")}&iax=images&ia=images&kp=1'">${names[1]}</strong> and
+                            <strong onclick="location.href = 'https://duckduckgo.com/?q=${names[2].replace(" ", "+")}&iax=images&ia=images&kp=1'">${names[2]}</strong>?`;
+                            $('#question').html(text);
                         }, 5000);
+
                         return;  // Arrêter l'animation
                     }
                 }
@@ -155,33 +217,24 @@
                 requestAnimationFrame(animate);
             }
 
+            function quit() {
+                sessionStorage.removeItem('category');
+                location.href = 'index.html';
+            }
+
             function Play() {
-                const wheelContent = document.getElementById('wheelContent');
+                $('#step1').removeClass('hidden');
+                $('#step1').addClass('block');
+                $('#step2').addClass('hidden');
+                $('#step2').removeClass('block');
 
-                // Initialiser les chanteurs
-                players.forEach(singer => {
-                    const div = document.createElement('div');
-                    div.textContent = singer;
-                    wheelContent.appendChild(div);
-                });
-
-                // Dupliquer les chanteurs pour un défilement infini
-                players.forEach(singer => {
-                    const div = document.createElement('div');
-                    div.textContent = singer;
-                    wheelContent.appendChild(div);
-                });
+                offset = 0;
+                speed = 10;  // Vitesse du défilement, en pixels par frame
+                completedTurns = 0;
+                targetName = players[Math.floor(Math.random() * players.length)];  // Nom cible
+                isStopping = false;
 
                 animate();
-
-                let category_ = sessionStorage.getItem('category').replace(' ', '_').toLowerCase();
-                let peoples = lists[category_];
-
-                for (let i = 0; i < 3; i++) {
-                    let random_question = Math.floor(Math.random() * peoples.length);
-                    document.getElementById('question').innerHTML += peoples[random_question] + '<br>';
-                    peoples.splice(random_question, 1);
-                }
             }
         </script>
     </body>
