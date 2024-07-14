@@ -13,18 +13,74 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://unpkg.com/lucide@latest"></script>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+        <style>
+            body {
+                background: linear-gradient(to bottom right, #eda338 0%, #e06d83 100%);
+                background-color: #eda338;
+                overflow: hidden;
+            }
+
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background: none;
+                border-radius: 5px;
+                transition: ease 0.5s;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: none;
+            }
+
+            @media screen and (min-width: 600px) {
+                #add_player_btn:hover #add-icon {
+                    transform: translate(-5rem, 0);
+                }
+
+                #start_btn:hover #start-icon {
+                    transform: translate(-5rem, 0);
+                }
+
+                #start_btn:hover,
+                #add_player_btn:hover {
+                    transform: scale(1.01);
+                }
+            }
+        </style>
     </head>
 
-    <body class="dark:text-gray-100 text-gray-800">
+    <body class="dark:text-gray-100 text-gray-800 h-screen w-screen">
         <div id="step1">
             <p id="user"></p>
         </div>
-        <div id="step2"></div>
+        <div id="step2">
+            <p id="question"></p>
+        </div>
 
         <script>
             $(document).ready(function() {
                 lucide.createIcons();
+
+                Play();
             });
+
+            function Play() {
+                let players = JSON.parse(sessionStorage.getItem('players'));
+                let random_user = Math.floor(Math.random() * players.length);
+                document.getElementById('user').innerHTML = players[random_user];
+
+                let category_ = sessionStorage.getItem('category').replace(' ', '_').toLowerCase();
+                let peoples = lists[category_];
+
+                for (let i = 0; i < 3; i++) {
+                    let random_question = Math.floor(Math.random() * peoples.length);
+                    document.getElementById('question').innerHTML += peoples[random_question] + '<br>';
+                    peoples.splice(random_question, 1);
+                }
+            }
         </script>
     </body>
 </html>

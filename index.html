@@ -103,10 +103,9 @@
                     localStorage.setItem('categories', JSON.stringify(['Actors', 'Singers', 'All', 'Fashion models']));
                 }
 
-                let categories = JSON.parse(localStorage.getItem('categories'));
                 for (let i = 0; i < categories.length; i++) {
                     $('#categorys-list').append(`
-                        <li class="flex items-center gap-24 w-11/12 rounded-lg bg-white px-4 text-slate-600 py-1 shadow-lg" onclick="sessionStorage.setItem('category', '${categories[i]}')">
+                        <li class="flex items-center gap-24 w-11/12 rounded-lg bg-white px-4 text-slate-600 py-1 shadow-lg hover:cursor-pointer" onclick="if (sessionStorage.getItem('category') != '${categories[i]}') {sessionStorage.setItem('category', '${categories[i]}')} else {sessionStorage.removeItem('category')}">
                             <i data-lucide="pencil"></i>
                             ${categories[i]}
                         </li>
@@ -114,6 +113,18 @@
 
                     lucide.createIcons();
                 }
+
+                setInterval(function() {
+                    for (let i = 0; i < categories.length; i++) {
+                        if (sessionStorage.getItem('category') == categories[i]) {
+                            $('#categorys-list li').eq(i).css('background', 'linear-gradient(to right, rgb(155 165 179) 0%, rgb(110 121 139) 100%)');
+                            $('#categorys-list li').eq(i).css('border', '2px solid rgb(0 0 0)');
+                        } else {
+                            $('#categorys-list li').eq(i).css('background', 'linear-gradient(to right, rgb(255 255 255) 0%, rgb(241 245 249) 50%, rgb(203 213 225) 100%)');
+                            $('#categorys-list li').eq(i).css('border', 'none');
+                        }
+                    }
+                }, 100);
 
                 $('#start_btn').click(function() {
                     if (!sessionStorage.getItem('category')) {
