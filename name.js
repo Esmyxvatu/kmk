@@ -83,6 +83,8 @@ var lists = {
         "Vinnie Hacker",
         "Kendall Jenner",
         "Hailey Bieber",
+        "Bella Hadid",
+        "Kylie Jenner",
     ],
     all: []
 }
